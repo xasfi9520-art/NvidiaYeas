@@ -19,7 +19,7 @@ const NIM_API_KEY = process.env.NIM_API_KEY;
 const SHOW_REASONING = false; // Set to true to show reasoning with <think> tags
 
 // 🔥 THINKING MODE TOGGLE - Enables thinking for specific models that support it
-const ENABLE_THINKING_MODE = true; // Set to true to enable chat_template_kwargs thinking parameter
+const ENABLE_THINKING_MODE = false; // Set to true to enable chat_template_kwargs thinking parameter
 
 // Model mapping (adjust based on available NIM models)
 const MODEL_MAPPING = {
@@ -114,11 +114,11 @@ app.post('/v1/chat/completions', async (req, res) => {
 });
     
     if (stream) {
-      // Handle streaming response with reasoning
-      res.setHeader('Content-Type', 'text/event-stream');
-      res.setHeader('Cache-Control', 'no-cache');
-      res.setHeader('Connection', 'keep-alive');
-      
+  // Handle streaming response with reasoning
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache, no-transform');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
       let buffer = '';
       let reasoningStarted = false;
       
